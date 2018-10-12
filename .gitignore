@@ -1,2 +1,5 @@
-*.class
-*.log
+.gradle
+.idea
+
+build
+out
