@@ -1,21 +1,64 @@
+import com.palantir.gradle.docker.DockerExtension
+import org.gradle.plugins.ide.idea.model.IdeaLanguageLevel
+import org.gradle.plugins.ide.idea.model.IdeaModel
+import org.gradle.plugins.ide.idea.model.IdeaModule
+
 plugins {
-    id("scala")
+    idea
+    scala
+    id("com.palantir.docker") version "0.20.1"
 }
 
 buildscript {
     repositories {
         gradlePluginPortal()
+        mavenCentral()
+        maven { setUrl("https://plugins.gradle.org/m2/") }
     }
 }
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+version = "1.0.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-repositories {
-    mavenCentral()
-    jcenter()
+configure<IdeaModel> {
+    project {
+        languageLevel = IdeaLanguageLevel(JavaVersion.VERSION_1_8)
+    }
+    module {
+        isDownloadJavadoc = true
+        isDownloadSources = true
+    }
+}
+
+tasks.withType<Test> {
+    maxParallelForks = Runtime.getRuntime().availableProcessors()
+}
+
+docker {
+    name = "acinonyx:${version}"
+    setDockerfile(file("Dockerfile"))
+    dependsOn(tasks["jar"])
+}
+
+tasks.getByName("docker").doFirst {
+    project.copy {
+        from(configurations.runtime)
+        into("$buildDir/docker/lib")
+    }
+
+    project.copy {
+        from(tasks["jar"])
+        into("$buildDir/docker/app")
+    }
 }
 
 dependencies {
