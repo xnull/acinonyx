@@ -1,7 +1,9 @@
 package acinonyx
 
+import acinonyx.server.HttpServer
+
 object Main extends App {
 
-  println("yay")
+  HttpServer.startAndWait()
 
 }
