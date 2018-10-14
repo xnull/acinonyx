@@ -46,7 +46,7 @@ tasks.withType<Test> {
 docker {
     name = "acinonyx:${version}"
     setDockerfile(file("Dockerfile"))
-    dependsOn(tasks["jar"])
+    dependsOn(tasks["check"])
 }
 
 tasks.getByName("docker").doFirst {
