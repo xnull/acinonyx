@@ -33,7 +33,7 @@ tasks {
 }
 
 configure<DockerExtension> {
-    name = "acinonyx:${version}"
+    name = "${project.name}:$version"
     setDockerfile(file("Dockerfile"))
     dependsOn(tasks["check"])
 }

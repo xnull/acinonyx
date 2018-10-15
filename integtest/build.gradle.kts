@@ -14,3 +14,8 @@ dependencies {
 
     compile("com.spotify:docker-client:8.14.1")
 }
+
+tasks.withType<Test> {
+    dependsOn(project(":acinonyx-client").tasks["docker"])
+    dependsOn(project(":acinonyx-server").tasks["docker"])
+}
