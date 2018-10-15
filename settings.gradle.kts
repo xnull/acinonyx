@@ -7,7 +7,7 @@ pluginManagement {
     }
 }
 
-include("client", "server")
+include("client", "server", "integtest")
 
 project(":client").name = "acinonix-client"
 project(":server").name = "acinonix-server"
