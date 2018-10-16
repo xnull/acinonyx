@@ -1,23 +1,28 @@
 package acinonyx.integtest
 
+import acinonyx.docker.{AcinonyxServerConfig, DockerAcinonyxServer}
 import com.spotify.docker.client.DefaultDockerClient
-import com.spotify.docker.client.messages.ContainerConfig
 import org.junit.runner.RunWith
 import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
 
+import scala.util.Try
+
 @RunWith(classOf[JUnitRunner])
-class MyTest extends FunSuite{
+class MyTest extends FunSuite {
 
-  test("check"){
-    val docker = DefaultDockerClient.fromEnv().build()
+  test("check") {
+    val server = new DockerAcinonyxServer(
+      DefaultDockerClient.fromEnv().build,
+      AcinonyxServerConfig("acinonyx-server", 8082)
+    )
 
-    val cfg = ContainerConfig.builder()
-      .image("acinonyx-client:1.0.0")
-      .build()
+    Try(server.remove())
+    Try(server.deploy())
+    Thread.sleep(300000)
+    println(server.logs())
 
-    val container = docker.createContainer(cfg)
-    docker.startContainer(container.id())
+    Try(server.kill())
 
     assert(1 == 1)
   }
