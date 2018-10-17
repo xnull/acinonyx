@@ -2,8 +2,11 @@ package acinonyx.docker
 
 import com.spotify.docker.client.DockerClient
 import com.spotify.docker.client.DockerClient.LogsParam
-import com.spotify.docker.client.messages.{ContainerConfig, HostConfig}
+import com.spotify.docker.client.messages.{ContainerConfig, HostConfig, PortBinding}
 import com.typesafe.scalalogging.LazyLogging
+
+import scala.collection.JavaConverters._
+import scala.util.{Failure, Success, Try}
 
 class DockerAcinonyxServer(docker: DockerClient, config: AcinonyxServerConfig) extends LazyLogging {
   val imageName = "acinonyx-server:1.0.0"
@@ -11,15 +14,28 @@ class DockerAcinonyxServer(docker: DockerClient, config: AcinonyxServerConfig) e
   def deploy(): DockerAcinonyxServer = {
     logger.info("Deploy acinonyx server")
 
+    sys.addShutdownHook {
+      Try(kill()) match {
+        case Failure(exception) =>
+          logger.debug(s"Can't stop docker container: ${config.name}")
+        case Success(value) =>
+          logger.info(s"Docker container stopped: ${config.name}")
+      }
+    }
+
+    val portBinding = List(PortBinding.of("0.0.0.0", config.port.toString)).asJava
+    val portBindings = Map(config.port.toString -> portBinding).asJava
+
     val hostConfig = HostConfig.builder
       .privileged(true)
       .autoRemove(true)
+      .portBindings(portBindings)
       .build
 
     val containerCfg = ContainerConfig.builder()
       .image(imageName)
       .hostConfig(hostConfig)
-      .exposedPorts(s"${config.port}/tcp")
+      .exposedPorts(config.port.toString)
       .cmd("sh", "-c", "java -cp 'acinonyx-server.jar:lib/*' acinonyx.Main")
       .build()
 
@@ -29,7 +45,10 @@ class DockerAcinonyxServer(docker: DockerClient, config: AcinonyxServerConfig) e
     this
   }
 
-  def kill(): Unit = docker.killContainer(config.name)
+  def kill(): Unit = {
+    logger.info(s"Kill docker container: ${config.name}")
+    docker.killContainer(config.name)
+  }
 
   def remove(): Unit = docker.removeContainer(config.name)
 

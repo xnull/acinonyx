@@ -1,7 +1,9 @@
 package acinonyx.integtest
 
+import acinonyx.client.{AcinonyxHttpClient, HttpClientConfig}
 import acinonyx.docker.{AcinonyxServerConfig, DockerAcinonyxServer}
 import com.spotify.docker.client.DefaultDockerClient
+import com.twitter.util.Await
 import org.junit.runner.RunWith
 import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
@@ -17,10 +19,18 @@ class MyTest extends FunSuite {
       AcinonyxServerConfig("acinonyx-server", 8082)
     )
 
-    Try(server.remove())
+    Try(server.kill())
     Try(server.deploy())
-    Thread.sleep(300000)
     println(server.logs())
+
+    Thread.sleep(3000)
+
+    val client = new AcinonyxHttpClient(HttpClientConfig())
+
+    val result = Await.result(client.start())
+
+    println(result.contentString)
+
 
     Try(server.kill())
 
