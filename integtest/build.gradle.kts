@@ -4,15 +4,11 @@ apply {
     from("$rootDir/gradle/scala.gradle.kts")
 }
 
-plugins {
-    java
-}
-
 dependencies {
-    compile(project(":acinonyx-client"))
-    compile(project(":acinonyx-server"))
+    add("compile", project(":acinonyx-client"))
+    add("compile", project(":acinonyx-server"))
 
-    compile("com.spotify:docker-client:8.14.1")
+    add("compile", "com.spotify:docker-client:8.14.1")
 }
 
 tasks.withType<Test> {

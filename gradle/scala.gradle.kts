@@ -19,6 +19,7 @@ dependencies {
     add("compile", "com.typesafe.scala-logging:scala-logging_2.12:3.9.0")
 
     add("compile", "org.typelevel:cats-effect_2.12:1.0.0")
+    add("compile", "io.monix:monix_2.12:3.0.0-RC1")
 
     add("compile", "com.github.finagle:finch-core_2.12:0.24.0")
     add("compile", "com.github.finagle:finch-circe_2.12:0.24.0")
