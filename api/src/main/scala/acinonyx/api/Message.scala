@@ -1,13 +1,12 @@
 package acinonyx.api
 
-trait Message {
+trait Message[A] {
   val id: MessageId
+  val data: A
 }
 
 case class MessageId(id: Long)
 
 case class Bike(id: String)
 
-case class DataMessage[A](id: MessageId, data: A) extends Message
-
-case class HeartbeatMessage(id: MessageId, bike: Bike) extends Message
+case class HeartbeatMessage(id: MessageId, data: Bike) extends Message[Bike]

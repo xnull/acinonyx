@@ -21,7 +21,7 @@ class AcinonyxServer(port: Int) extends LazyLogging with Module[IO] {
   val ping: Endpoint[IO, Bike] =
     post("ping" :: jsonBody[HeartbeatMessage]) { message: HeartbeatMessage =>
       //update bike status
-      Ok(message.bike)
+      Ok(message.data)
     }
 
   val api: Service[Request, Response] = (health :+: ping)

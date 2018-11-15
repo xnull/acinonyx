@@ -30,6 +30,9 @@ dependencies {
     add("compile", "io.circe:circe-parser_2.12:0.10.1")
     add("compile", "io.circe:circe-java8_2.12:0.10.1")
 
+    add("compile", "org.tpolecat:doobie-core_2.12:0.6.0")
+    add("compile", "com.h2database:h2:1.4.197")
+
     add("testCompile", "org.scalatest:scalatest_2.12:3.0.0")
     add("testCompile", "junit:junit:4.12")
 }
