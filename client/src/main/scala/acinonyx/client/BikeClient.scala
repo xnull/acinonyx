@@ -18,7 +18,7 @@ import scala.language.higherKinds
 trait BikeClient[F[_]] {
   def health(): F[Response]
 
-  def ping(): F[Bike]
+  def ping(bike: Bike): F[Bike]
 }
 
 /**
@@ -41,7 +41,7 @@ trait BikeClient[F[_]] {
   *
   * @return
   */
-class BikeClientIo(client: HttpClient) extends BikeClient[IO[Bike]] with LazyLogging {
+class BikeClientIo(client: HttpClient) extends BikeClient[IO] with LazyLogging {
 
   def health(): IO[Response] = {
     logger.trace("Health check")
@@ -57,9 +57,10 @@ class BikeClientIo(client: HttpClient) extends BikeClient[IO[Bike]] with LazyLog
     }
   }
 
-  def ping(): IO[Bike] = {
+  def ping(bike: Bike): IO[Bike] = {
+    logger.info("Heartbeat bike: {}", bike)
 
-    val message = HeartbeatMessage(MessageId(123), Bike("aci"))
+    val message = HeartbeatMessage(MessageId(123), bike)
 
     val response = client.send { endpoint =>
       val input = Input
@@ -69,11 +70,16 @@ class BikeClientIo(client: HttpClient) extends BikeClient[IO[Bike]] with LazyLog
       endpoint(input.request).as[Future[Response]]
     }
 
-    for {
+    val bikeIo = for {
       resp <- IO.fromFuture(IO.pure(response))
       bike <- IO.fromEither(decode[Bike](resp.contentString))
     } yield {
+      logger.info("Bike ping: {}", bike)
       bike
     }
+
+    bikeIo.unsafeRunSync()
+
+    bikeIo
   }
 }

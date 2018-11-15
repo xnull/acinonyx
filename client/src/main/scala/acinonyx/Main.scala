@@ -1,12 +1,14 @@
 package acinonyx
 
-import acinonyx.client.{ClientScheduler, HttpClient, BikeClientAgent, HttpClientConfig}
+import acinonyx.api.Bike
+import acinonyx.client.{BikeAgent, BikeClientIo, HttpClient, HttpClientConfig}
 
 
 object Main extends App {
 
+  val bike = Bike("333")
   val clientConfig = HttpClientConfig()
   val httpClient = new HttpClient(clientConfig)
-  new ClientScheduler(new BikeClientAgent(httpClient)).start()
+  new BikeAgent(bike, new BikeClientIo(httpClient)).start()
 
 }

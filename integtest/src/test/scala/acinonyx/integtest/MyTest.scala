@@ -1,9 +1,10 @@
 package acinonyx.integtest
 
-import acinonyx.client.{ClientScheduler, HttpClient, BikeClientAgent, HttpClientConfig}
+import acinonyx.api.Bike
+import acinonyx.client._
 import acinonyx.docker.{AcinonyxServerConfig, DockerAcinonyxServer}
+import cats.effect.IO
 import com.spotify.docker.client.DefaultDockerClient
-import com.twitter.util.Await
 import org.junit.runner.RunWith
 import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
@@ -25,13 +26,17 @@ class MyTest extends FunSuite {
 
     Thread.sleep(3000)
 
+    val bike = Bike("123")
     val client = new HttpClient(HttpClientConfig())
-    new ClientScheduler(new BikeClientAgent(client)).start()
+    val bikeClient = new BikeClientIo(client)
+    val bikeAgent = new BikeAgent[IO](bike, bikeClient).start()
 
     Thread.sleep(1000000)
     //println(result.contentString)
 
     Try(server.kill())
+
+    bikeAgent.cancelable.foreach(_.cancel)
 
     assert(1 == 1)
   }
