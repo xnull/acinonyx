@@ -21,9 +21,14 @@ dependencies {
     add("compile", "org.typelevel:cats-effect_2.12:1.0.0")
     add("compile", "io.monix:monix_2.12:3.0.0-RC1")
 
-    add("compile", "com.github.finagle:finch-core_2.12:0.24.0")
-    add("compile", "com.github.finagle:finch-circe_2.12:0.24.0")
-    add("compile", "io.circe:circe-generic_2.12:0.9.0")
+    add("compile", "com.github.finagle:finchx-core_2.12:0.25.0")
+    add("compile", "com.github.finagle:finch-circe_2.12:0.25.0")
+    add("compile", "com.twitter:bijection-util_2.12:0.9.6")
+
+    add("compile", "io.circe:circe-core_2.12:0.10.1")
+    add("compile", "io.circe:circe-generic_2.12:0.10.1")
+    add("compile", "io.circe:circe-parser_2.12:0.10.1")
+    add("compile", "io.circe:circe-java8_2.12:0.10.1")
 
     add("testCompile", "org.scalatest:scalatest_2.12:3.0.0")
     add("testCompile", "junit:junit:4.12")

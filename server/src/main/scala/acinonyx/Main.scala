@@ -1,9 +1,10 @@
 package acinonyx
 
-import acinonyx.server.HttpServer
+import acinonyx.server.AcinonyxServer
+import com.twitter.util.Await
 
 object Main extends App {
 
-  HttpServer.startAndWait()
-
+  val server = AcinonyxServer.start()
+  Await.ready(server)
 }

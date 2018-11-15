@@ -7,7 +7,8 @@ pluginManagement {
     }
 }
 
-include("client", "server", "integtest")
+include("client", "server", "api", "integtest")
 
 project(":client").name = "acinonyx-client"
 project(":server").name = "acinonyx-server"
+project(":api").name = "acinonyx-api"

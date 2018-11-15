@@ -1,6 +1,6 @@
 package acinonyx.integtest
 
-import acinonyx.client.{AcinonyxClientScheduler, AcinonyxHttpClient, HttpClientConfig}
+import acinonyx.client.{ClientScheduler, HttpClient, BikeClientAgent, HttpClientConfig}
 import acinonyx.docker.{AcinonyxServerConfig, DockerAcinonyxServer}
 import com.spotify.docker.client.DefaultDockerClient
 import com.twitter.util.Await
@@ -25,8 +25,8 @@ class MyTest extends FunSuite {
 
     Thread.sleep(3000)
 
-    val client = new AcinonyxHttpClient(HttpClientConfig())
-    new AcinonyxClientScheduler(client).start()
+    val client = new HttpClient(HttpClientConfig())
+    new ClientScheduler(new BikeClientAgent(client)).start()
 
     Thread.sleep(1000000)
     //println(result.contentString)
