@@ -1,8 +1,8 @@
 language: java
-install: true
+jdk: openjdk11
 
-jdk:
-- oraclejdk8
+services:
+- docker
 
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -13,5 +13,14 @@ cache:
   - $HOME/.gradle/caches/
   - $HOME/.gradle/wrapper/
 
+install: true
+
 script:
-- ./gradlew clean test
+- ./gradlew clean dockerPush
+
+notifications:
+  email:
+    recipients:
+    - xrw.null@gmail.com
+    on_success: never
+    on_failure: always

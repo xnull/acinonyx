@@ -33,7 +33,7 @@ tasks {
 }
 
 configure<DockerExtension> {
-    name = "${project.name}:$version"
+    name = "bynull-docker-acinonyx.bintray.io/${project.name}:$version"
     setDockerfile(file("Dockerfile"))
     dependsOn(tasks["check"])
 }
