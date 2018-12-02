@@ -13,6 +13,9 @@ cache:
   - $HOME/.gradle/caches/
   - $HOME/.gradle/wrapper/
 
+before_install:
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin bynull-docker-acinonyx.bintray.io
+
 install: true
 
 script:
