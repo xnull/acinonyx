@@ -35,6 +35,7 @@ jobs:
     script:
     - ./gradlew clean dockerPush -x test
 
+
 notifications:
   email:
     recipients:
