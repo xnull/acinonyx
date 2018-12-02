@@ -31,7 +31,7 @@ class MyTest extends FunSuite {
     val bikeClient = new BikeClientIo(client)
     val bikeAgent = new BikeAgent[IO](bike, bikeClient).start()
 
-    Thread.sleep(1000000)
+    //Thread.sleep(1000000)
     //println(result.contentString)
 
     Try(server.kill())

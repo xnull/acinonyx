@@ -29,11 +29,11 @@ jobs:
   - stage: check
     name: Check project
     script:
-    - ./gradlew clean test
+    - ./gradlew clean check --info
   - stage: deployment
     name: Deployment
     script:
-    - ./gradlew clean dockerPush -x test
+    - ./gradlew clean dockerPush -x test --info
 
 
 notifications:

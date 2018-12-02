@@ -9,7 +9,7 @@ import scala.collection.JavaConverters._
 import scala.util.{Failure, Success, Try}
 
 class DockerAcinonyxServer(docker: DockerClient, config: AcinonyxServerConfig) extends LazyLogging {
-  val imageName = "acinonyx-server:1.0.0"
+  val imageName = "bynull-docker-acinonyx.bintray.io/acinonyx-server:1.0.0"
 
   def deploy(): DockerAcinonyxServer = {
     logger.info("Deploy acinonyx server")
