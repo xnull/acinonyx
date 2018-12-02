@@ -4,6 +4,12 @@ jdk: openjdk11
 services:
 - docker
 
+stages:
+- name: test
+  if: branch != master
+- name: deployment
+  if: branch = master AND type != pull_request
+
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -14,12 +20,12 @@ cache:
   - $HOME/.gradle/wrapper/
 
 before_install:
-- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin bynull-docker-acinonyx.bintray.io
+- echo "$DOCKER_PASSWORD" | docker login -u xnull --password-stdin bynull-docker-acinonyx.bintray.io
 
 install: true
 
 script:
-- ./gradlew clean dockerPush
+- ./gradlew clean dockerPush -x test
 
 notifications:
   email:
