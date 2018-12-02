@@ -5,10 +5,10 @@ services:
 - docker
 
 stages:
-- name: test
+- name: check
   if: branch != master
 - name: deployment
-  if: branch = master AND type != pull_request
+  if: branch = master
 
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -24,8 +24,16 @@ before_install:
 
 install: true
 
-script:
-- ./gradlew clean dockerPush -x test
+jobs:
+  include:
+  - stage: check
+    name: Check project
+    script:
+    - ./gradlew clean test
+  - stage: deployment
+    name: Deployment
+    script:
+    - ./gradlew clean dockerPush -x test
 
 notifications:
   email:
