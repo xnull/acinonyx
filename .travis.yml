@@ -6,8 +6,10 @@ services:
 
 stages:
 - name: check
-  if: branch != master
+  # Run check tasks for any branch exclude master branch or for any PR
+  if: branch != master OR (branch = master AND type = pull_request)
 - name: deployment
+  # Deploy master branch
   if: branch = master AND type != pull_request
 
 before_cache:
