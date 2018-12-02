@@ -16,6 +16,9 @@ apply<com.palantir.gradle.docker.PalantirDockerPlugin>()
 tasks {
     val dockerPrepare = getByName("dockerPrepare")
     val jar = tasks["jar"]
+    val dockerPush = getByName("dockerPush")
+    val check = getByName("check")
+    val build = getByName("build")
 
     dockerPrepare.dependsOn(jar)
 
@@ -30,10 +33,12 @@ tasks {
             into("$buildDir/docker/app/")
         }
     }
+
+    dockerPush.dependsOn(check)
+    build.dependsOn(dockerPush)
 }
 
 configure<DockerExtension> {
     name = "bynull-docker-acinonyx.bintray.io/${project.name}:$version"
     setDockerfile(file("Dockerfile"))
-    dependsOn(tasks["check"])
 }

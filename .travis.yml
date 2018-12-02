@@ -5,9 +5,9 @@ services:
 - docker
 
 stages:
-- name: check
+#- name: check
   # Run check tasks for any branch exclude master branch or for any PR
-  if: branch != master OR (branch = master AND type = pull_request)
+#  if: branch != master OR (branch = master AND type = pull_request)
 - name: deployment
   # Deploy master branch
   if: branch = master AND type != pull_request
@@ -20,6 +20,7 @@ cache:
   directories:
   - $HOME/.gradle/caches/
   - $HOME/.gradle/wrapper/
+  - $HOME/docker
 
 before_install:
 - echo "$DOCKER_PASSWORD" | docker login -u xnull --password-stdin bynull-docker-acinonyx.bintray.io
@@ -28,14 +29,14 @@ install: true
 
 jobs:
   include:
-  - stage: check
-    name: Check project
-    script:
-    - ./gradlew clean check --info
+  #- stage: check
+  #  name: Check project
+  #  script:
+  #  - ./gradlew clean check --info
   - stage: deployment
     name: Deployment
     script:
-    - ./gradlew clean dockerPush -x test --info
+    - ./gradlew clean build --info
 
 
 notifications:
