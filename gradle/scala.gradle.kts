@@ -66,6 +66,9 @@ tasks.withType<Jar> {
 configure<ReleaseExtension> {
     preCommitText = ""
     tagTemplate = ""
+    buildTasks = emptyList()
+    versionPropertyFile = "version"
+
     val git: GitConfig = getProperty("git") as GitConfig
 
     git.requireBranch = "master"
