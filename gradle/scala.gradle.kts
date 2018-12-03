@@ -1,4 +1,19 @@
+import net.researchgate.release.GitAdapter
+import net.researchgate.release.GitAdapter.GitConfig
+import net.researchgate.release.ReleaseExtension
+import net.researchgate.release.ReleasePlugin
+
+buildscript {
+    repositories {
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath("net.researchgate:gradle-release:2.7.0")
+    }
+}
+
 apply<ScalaPlugin>()
+apply<ReleasePlugin>()
 
 configure<JavaPluginExtension> {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -46,4 +61,12 @@ tasks.withType<Jar> {
     manifest {
         attributes["Main-Class"] = "acinonyx.Main"
     }
+}
+
+configure<ReleaseExtension> {
+    preCommitText = ""
+    tagTemplate = ""
+    val git: GitConfig = getProperty("git") as GitConfig
+
+    git.requireBranch = "master"
 }

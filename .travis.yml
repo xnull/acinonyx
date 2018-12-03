@@ -5,9 +5,11 @@ services:
 - docker
 
 stages:
-#- name: check
-  # Run check tasks for any branch exclude master branch or for any PR
-#  if: branch != master OR (branch = master AND type = pull_request)
+- name: check
+  # Run check tasks for:
+  # - any branch exclude master branch
+  # - for any PR
+  if: branch != master OR (branch = master AND type = pull_request)
 - name: deployment
   # Deploy master branch
   if: branch = master AND type != pull_request
@@ -29,17 +31,18 @@ install: true
 
 jobs:
   include:
-  #- stage: check
-  #  name: Check project
-  #  script:
-  #  - ./gradlew clean check --info
+  - stage: check
+    name: Check project
+    script:
+    - ./gradlew clean check --info
   - stage: deployment
     name: Deployment
     script:
-    - ./gradlew clean build --info
+    - ./gradlew clean dockerPush -x test --info
 
 
 notifications:
+  webhooks: https://www.travisbuddy.com/
   email:
     recipients:
     - xrw.null@gmail.com

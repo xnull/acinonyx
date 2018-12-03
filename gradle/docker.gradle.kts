@@ -2,9 +2,7 @@ import com.palantir.gradle.docker.DockerExtension
 
 buildscript {
     repositories {
-        maven {
-            url = uri("https://plugins.gradle.org/m2/")
-        }
+        gradlePluginPortal()
     }
     dependencies {
         classpath("gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.20.1")
