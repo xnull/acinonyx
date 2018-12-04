@@ -71,7 +71,7 @@ tasks.withType<Jar> {
 
 configure<ReleaseExtension> {
     preCommitText = ""
-    tagTemplate = ""
+    tagTemplate = "$name-$version"
     buildTasks = emptyList()
     versionPropertyFile = "version"
 
