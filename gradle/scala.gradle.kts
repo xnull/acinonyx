@@ -74,7 +74,7 @@ configure<ReleaseExtension> {
     buildTasks = emptyList()
     versionPropertyFile = "version"
 
-    preCommitText = name
+    preCommitText = ""
     newVersionCommitMessage = "release: "
 
     val git: GitConfig = getProperty("git") as GitConfig
