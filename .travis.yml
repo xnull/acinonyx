@@ -4,6 +4,11 @@ jdk: openjdk11
 services:
 - docker
 
+addons:
+  apt:
+    packages:
+    - docker-ce
+
 stages:
 - name: check
   # Run check tasks for:
