@@ -43,7 +43,7 @@ jobs:
   - stage: deployment
     name: Deployment
     script:
-    - ./gradlew clean dockerPush -x test --info --stacktrace
+    - ./gradlew clean release build -x test --info --stacktrace
 
 
 notifications:
