@@ -70,10 +70,12 @@ tasks.withType<Jar> {
 }
 
 configure<ReleaseExtension> {
-    preCommitText = ""
     tagTemplate = "$name-$version"
     buildTasks = emptyList()
     versionPropertyFile = "version"
+
+    preCommitText = name
+    newVersionCommitMessage = "release: "
 
     val git: GitConfig = getProperty("git") as GitConfig
 
