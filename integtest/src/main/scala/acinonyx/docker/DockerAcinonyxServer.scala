@@ -8,8 +8,11 @@ import com.typesafe.scalalogging.LazyLogging
 import scala.collection.JavaConverters._
 import scala.util.{Failure, Success, Try}
 
+object DockerAcinonyxServer {
+  val ImageName: String = "bynull-docker-acinonyx.bintray.io/acinonyx-server:latest"
+}
+
 class DockerAcinonyxServer(docker: DockerClient, config: AcinonyxServerConfig) extends LazyLogging {
-  val imageName = "bynull-docker-acinonyx.bintray.io/acinonyx-server:1.0.0"
 
   def deploy(): DockerAcinonyxServer = {
     logger.info("Deploy acinonyx server")
@@ -33,7 +36,7 @@ class DockerAcinonyxServer(docker: DockerClient, config: AcinonyxServerConfig) e
       .build
 
     val containerCfg = ContainerConfig.builder()
-      .image(imageName)
+      .image(DockerAcinonyxServer.ImageName)
       .hostConfig(hostConfig)
       .exposedPorts(config.port.toString)
       .cmd("sh", "-c", "java -cp 'acinonyx-server.jar:lib/*' acinonyx.Main")

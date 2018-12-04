@@ -15,6 +15,9 @@ import scala.util.Try
 class MyTest extends FunSuite {
 
   test("check") {
+    println(DockerAcinonyxServer.ImageName)
+    System.exit(0)
+
     val server = new DockerAcinonyxServer(
       DefaultDockerClient.fromEnv().build,
       AcinonyxServerConfig("acinonyx-server", 8082)
