@@ -2,6 +2,7 @@ import net.researchgate.release.GitAdapter
 import net.researchgate.release.GitAdapter.GitConfig
 import net.researchgate.release.ReleaseExtension
 import net.researchgate.release.ReleasePlugin
+import java.nio.charset.Charset
 
 buildscript {
     repositories {
@@ -14,6 +15,11 @@ buildscript {
 
 apply<ScalaPlugin>()
 apply<ReleasePlugin>()
+
+version = project.file("version")
+        .readText(Charset.defaultCharset())
+        .trim()
+        .substring("version=".length)
 
 configure<JavaPluginExtension> {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -72,4 +78,8 @@ configure<ReleaseExtension> {
     val git: GitConfig = getProperty("git") as GitConfig
 
     git.requireBranch = "master"
+}
+
+tasks.create("getVersion").doLast {
+    print(version)
 }
