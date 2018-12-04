@@ -39,11 +39,11 @@ jobs:
   - stage: check
     name: Check project
     script:
-    - ./gradlew clean check --info
+    - ./gradlew clean check --info --stacktrace
   - stage: deployment
     name: Deployment
     script:
-    - ./gradlew clean dockerPush -x test --info
+    - ./gradlew clean dockerPush -x test --info --stacktrace
 
 
 notifications:
