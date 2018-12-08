@@ -38,5 +38,6 @@ tasks {
 
 configure<DockerExtension> {
     name = "bynull-docker-acinonyx.bintray.io/${project.name}:$version"
+    tags("latest")
     setDockerfile(file("Dockerfile"))
 }

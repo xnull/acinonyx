@@ -10,6 +10,6 @@ dependencies {
 }
 
 tasks.withType<Test> {
-    dependsOn(project(":acinonyx-client").tasks["docker"])
-    dependsOn(project(":acinonyx-server").tasks["docker"])
+    dependsOn(project(":acinonyx-client").tasks["dockerTagLatest"])
+    dependsOn(project(":acinonyx-server").tasks["dockerTagLatest"])
 }

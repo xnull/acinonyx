@@ -7,3 +7,5 @@ EXPOSE 8082
 
 WORKDIR /app
 
+CMD java -cp acinonyx-server.jar:lib/* acinonyx.Main
+
